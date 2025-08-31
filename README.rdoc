@@ -1,0 +1,7 @@
+= web-framework-playground
+
+Various experiments in building web frameworks in Ruby
+
+== usage
+
+bundle exec rackup basic/basic.ru
