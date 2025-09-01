@@ -4,7 +4,11 @@ Various experiments in building web frameworks in Ruby
 
 == usage
 
-bundle exec rackup basic/basic.ru
+bundle exec rackup basic/basic.ru # replace with any available ru file
+
+== testing
+
+bundle exec rspec
 
 == docs
 
