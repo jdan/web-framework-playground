@@ -1,34 +1,33 @@
 # frozen_string_literal: true
 
 ##
-# A web server with Sinatra-style routing
+# A web server with Hanami-style routing
 #
-# get '/' { 'Hello, world!' }
+# get '/', to: :index
 #
-class SinatraRouting
+class HanamiRouting
   def initialize
-    @routes = []
     @params = {}
-    route
   end
 
-  def route
-    raise NotImplementedError
-  end
-
-  def get(pattern, &block)
+  def self.get(pattern, to:)
     # Construct a new regex
     # Match the entire line
     # Replace :name with (?<name>\w+)
     re = Regexp.new('^' + pattern.gsub(/:(\w+)/, '(?<\1>\w+)') + '$')
 
+    @routes ||= []
     @routes << { method: 'GET',
                  pattern: re,
-                 block: block }
+                 method_name: to }
+  end
+
+  def self.routes
+    @routes || []
   end
 
   def call(env)
-    route = @routes.find do |route|
+    route = self.class.routes.find do |route|
       route[:method] == env['REQUEST_METHOD'] and route[:pattern] =~ env['REQUEST_PATH']
     end
 
@@ -41,34 +40,33 @@ class SinatraRouting
       end
       define_singleton_method('params', -> { params })
 
-      [200, { 'content-type' => 'text/html' }, [instance_eval(&route[:block])]]
+      [200, { 'content-type' => 'text/html' }, [send(route[:method_name])]]
     else
       [404, { 'content-type' => 'text/html' }, ['<h1>404 Not Found</h1>']]
     end
   end
 end
 
-class SinatraExample < SinatraRouting
-  # Instead of a `route` wrapper, can employ a similar strategy as we did in
-  # HanamiRouting.get to access the HanamiRouting.routes class variable
-  def route
-    get '/' do
-      <<~HTML
-        <body>
-          <h1>Hello, from index.html</h1>
-          <a href="/jordan">Say hi to Jordan</a>
-        </body>
-      HTML
-    end
+class HanamiExample < HanamiRouting
+  get '/', to: :index
+  get '/:name', to: :name
 
-    get '/:name' do
-      <<~HTML
-        <body>
-          <h1>Hello, #{params[:name]}!</h1>
-        </body>
-      HTML
-    end
+  def index
+    <<~HTML
+      <body>
+        <h1>Hello, from index.html</h1>
+        <a href="/jordan">Say hi to Jordan</a>
+      </body>
+    HTML
+  end
+
+  def name
+    <<~HTML
+      <body>
+        <h1>Hello, #{params[:name]}!</h1>
+      </body>
+    HTML
   end
 end
 
-run SinatraExample.new
+run HanamiExample.new
