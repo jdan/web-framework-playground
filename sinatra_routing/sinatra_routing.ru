@@ -7,28 +7,28 @@
 #
 class SinatraRouting
   def initialize
-    @routes = []
     @params = {}
-    route
   end
 
-  def route
-    raise NotImplementedError
-  end
+  class << self
+    def routes
+      @routes ||= []
+    end
 
-  def get(pattern, &block)
-    # Construct a new regex
-    # Match the entire line
-    # Replace :name with (?<name>\w+)
-    re = Regexp.new('^' + pattern.gsub(/:(\w+)/, '(?<\1>\w+)') + '$')
+    def get(pattern, &block)
+      # Construct a new regex
+      # Match the entire line
+      # Replace :name with (?<name>\w+)
+      re = Regexp.new('^' + pattern.gsub(/:(\w+)/, '(?<\1>\w+)') + '$')
 
-    @routes << { method: 'GET',
-                 pattern: re,
-                 block: block }
+      routes << { method: 'GET',
+                  pattern: re,
+                  block: block }
+    end
   end
 
   def call(env)
-    route = @routes.find do |route|
+    route = self.class.routes.find do |route|
       route[:method] == env['REQUEST_METHOD'] and route[:pattern] =~ env['REQUEST_PATH']
     end
 
@@ -49,25 +49,21 @@ class SinatraRouting
 end
 
 class SinatraExample < SinatraRouting
-  # Instead of a `route` wrapper, can employ a similar strategy as we did in
-  # HanamiRouting.get to access the HanamiRouting.routes class variable
-  def route
-    get '/' do
-      <<~HTML
-        <body>
-          <h1>Hello, from index.html</h1>
-          <a href="/jordan">Say hi to Jordan</a>
-        </body>
-      HTML
-    end
+  get '/' do
+    <<~HTML
+      <body>
+        <h1>Hello, from index.html</h1>
+        <a href="/jordan">Say hi to Jordan</a>
+      </body>
+    HTML
+  end
 
-    get '/:name' do
-      <<~HTML
-        <body>
-          <h1>Hello, #{params[:name]}!</h1>
-        </body>
-      HTML
-    end
+  get '/:name' do
+    <<~HTML
+      <body>
+        <h1>Hello, #{params[:name]}!</h1>
+      </body>
+    HTML
   end
 end
 
