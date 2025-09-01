@@ -4,8 +4,17 @@
 # A basic Rack server
 #
 class BasicExample
-  def call(_env)
-    [200, { 'content-type' => 'text/html' }, ['<h1>Hello, world!</h1>']]
+  def call(env)
+    if env['REQUEST_PATH'] == '/'
+      [200, { 'content-type' => 'text/html' },
+       ['<h1>Hello, from index.html</h1><a href="/jordan">Say hi to Jordan</a>']]
+    elsif env['REQUEST_PATH'] =~ %r{^/(?<name>\w+)$}
+      [200, { 'content-type' => 'text/html' },
+       ["<h1>Hello, #{Regexp.last_match.named_captures['name']}!</h1>"]]
+    else
+      [404, { 'content-type' => 'text/html' },
+       ['<h1>404 Not Found</h1>']]
+    end
   end
 end
 
