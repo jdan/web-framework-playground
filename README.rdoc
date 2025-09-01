@@ -5,3 +5,7 @@ Various experiments in building web frameworks in Ruby
 == usage
 
 bundle exec rackup basic/basic.ru
+
+== docs
+
+bundle exec rdoc
