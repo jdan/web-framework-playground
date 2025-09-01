@@ -10,25 +10,26 @@ class HanamiRouting
     @params = {}
   end
 
-  def self.get(pattern, to:)
-    # Construct a new regex
-    # Match the entire line
-    # Replace :name with (?<name>\w+)
-    re = Regexp.new('^' + pattern.gsub(/:(\w+)/, '(?<\1>\w+)') + '$')
+  class << self
+    def routes
+      @routes ||= []
+    end
 
-    @routes ||= []
-    @routes << { method: 'GET',
-                 pattern: re,
-                 method_name: to }
-  end
+    def get(pattern, to:)
+      # Construct a new regex
+      # Match the entire line
+      # Replace :name with (?<name>\w+)
+      re = Regexp.new('^' + pattern.gsub(/:(\w+)/, '(?<\1>\w+)') + '$')
 
-  def self.routes
-    @routes || []
+      routes << { method: 'GET',
+                  pattern: re,
+                  method_name: to }
+    end
   end
 
   def call(env)
     route = self.class.routes.find do |route|
-      route[:method] == env['REQUEST_METHOD'] and route[:pattern] =~ env['REQUEST_PATH']
+      route[:method] == env['REQUEST_METHOD'] && route[:pattern] =~ env['REQUEST_PATH']
     end
 
     if route
