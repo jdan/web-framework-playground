@@ -4,25 +4,32 @@
 # A basic Rack server
 #
 class BasicExample
+  def html(body)
+    [200, { 'content-type' => 'text/html' }, [body]]
+  end
+
+  def not_found
+    [404, { 'content-type' => 'text/html' }, ['404 Not Found']]
+  end
+
   def call(env)
-    if env['PATH_INFO'] == '/'
-      [200, { 'content-type' => 'text/html' },
-       ['You got here by: /']]
-    elsif env['PATH_INFO'] == '/welcome/to/my/site'
-      [200, { 'content-type' => 'text/html' },
-       ['You got here by: /welcome/to/my/site']]
-    elsif env['PATH_INFO'] =~ %r{^/nuts/(?<number>\d+)$}
-      [200, { 'content-type' => 'text/html' },
-       ["You got here by: /nuts/#{Regexp.last_match.named_captures['number']}"]]
-    elsif env['PATH_INFO'] =~ %r{^/gorp/(?<anything>\w+)$}
-      [200, { 'content-type' => 'text/html' },
-       ["You got here by: /gorp/#{Regexp.last_match.named_captures['anything']}"]]
-    elsif env['PATH_INFO'] =~ %r{^/nuts/(?<number>\d+)/(?<anything>\w+)$}
-      [200, { 'content-type' => 'text/html' },
-       ["You got here by: /nuts/#{Regexp.last_match.named_captures['number']}/#{Regexp.last_match.named_captures['anything']}"]]
+    case env['PATH_INFO']
+    when '/'
+      html 'You got here by: /'
+    when '/welcome/to/my/site'
+      html 'You got here by: /welcome/to/my/site'
+    when %r{^/nuts/(?<number>\d+)$}
+      number = Regexp.last_match.named_captures['number']
+      html "You got here by: /nuts/#{number}"
+    when %r{^/gorp/(?<anything>\w+)$}
+      anything = Regexp.last_match.named_captures['anything']
+      html "You got here by: /gorp/#{anything}"
+    when %r{^/nuts/(?<number>\d+)/(?<anything>\w+)$}
+      number = Regexp.last_match.named_captures['number']
+      anything = Regexp.last_match.named_captures['anything']
+      html "You got here by: /nuts/#{number}/#{anything}"
     else
-      [404, { 'content-type' => 'text/html' },
-       ['<h1>404 Not Found</h1>']]
+      not_found
     end
   end
 end
