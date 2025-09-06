@@ -8,7 +8,7 @@ ROUTING=[basic | sinatra | hanami | camping] bundle exec rackup
 
 == testing
 
-bundle exec rspec
+bundle exec rake test
 
 == docs
 

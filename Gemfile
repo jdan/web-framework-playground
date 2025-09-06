@@ -12,3 +12,5 @@ gem 'rspec', '~> 3.13'
 gem 'rack-test', '~> 2.2'
 
 gem 'rubocop', '~> 1.0', require: false
+
+gem 'rake', '~> 13.3'
