@@ -4,4 +4,4 @@ AllCops:
 
 Metrics/BlockLength:
   Exclude:
-    - spec/routers_spec.rb
+    - spec/routing_spec.rb
