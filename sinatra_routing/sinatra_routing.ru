@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 ##
-# A web server with Sinatra-style routing
-#
-# get '/' { 'Hello, world!' }
-#
+# A Rack-compatible server which enables Sinatra-style Routing
 class SinatraRouting
   def initialize
     @params = {}
@@ -57,6 +54,11 @@ class SinatraRouting
   end
 end
 
+##
+# A web server with Sinatra-style routing
+#
+# get '/' { 'Hello, world!' }
+#
 class SinatraExample < SinatraRouting
   get '/' do
     html <<~HTML.chomp

@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 ##
-# A web server with Hanami-style routing
-#
-# get '/', to: :index
-#
+# A rack-compatible server which enables Hanami-style routing
 class HanamiRouting
   def initialize
     @params = {}
@@ -19,8 +16,7 @@ class HanamiRouting
       # Construct a new regex
       # Match the entire line
       # Replace :name with (?<name>\w+)
-      re = Regexp.new('^' + pattern.gsub(/:(\w+)/, '(?<\1>\w+)') + '$')
-
+      re = Regexp.new("^#{pattern.gsub(/:(\w+)/, '(?<\1>\w+)')}$")
       routes << { method: 'GET',
                   pattern: re,
                   method_name: to }
@@ -58,6 +54,11 @@ class HanamiRouting
   end
 end
 
+##
+# A web server with Hanami-style routing
+#
+# get '/', to: :index
+#
 class HanamiExample < HanamiRouting
   get '/', to: :index
   get '/welcome/to/my/site', to: :welcome

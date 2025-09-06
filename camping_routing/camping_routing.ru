@@ -33,11 +33,11 @@ class CampingRouting
                     instance: instance }
                 else
                   # HelloWorld => hello world
-                  parts = const_name.to_s.gsub(/([A-Z])/) { |s| ' ' + s.downcase }.split(' ')
+                  parts = const_name.to_s.gsub(/([A-Z])/) { |s| " #{s.downcase}" }.split(' ')
 
                   # hello world => ^/hello/world$
                   # hello x world => ^/hello/(\w+)/world$
-                  re = Regexp.new('^/' + parts.map { |part|
+                  re = Regexp.new("^/#{parts.map do |part|
                     if part == 'x'
                       '(\w+)'
                     elsif part == 'n'
@@ -45,7 +45,7 @@ class CampingRouting
                     else
                       part
                     end
-                  }.join('/') + '$')
+                  end.join('/')}$")
 
                   { method: 'GET',
                     pattern: re,
@@ -70,6 +70,7 @@ class CampingRouting
 end
 
 class CampingExample < CampingRouting
+  # /
   class Index
     def get
       <<~HTML.chomp
@@ -78,6 +79,7 @@ class CampingExample < CampingRouting
     end
   end
 
+  # /welcome/to/my/site
   class WelcomeToMySite
     def get
       <<~HTML.chomp
@@ -86,6 +88,7 @@ class CampingExample < CampingRouting
     end
   end
 
+  # /nuts/:number
   class NutsN
     def get(number)
       <<~HTML.chomp
@@ -94,6 +97,7 @@ class CampingExample < CampingRouting
     end
   end
 
+  # /gorp/:anything
   class GorpX
     def get(anything)
       <<~HTML.chomp
@@ -102,6 +106,7 @@ class CampingExample < CampingRouting
     end
   end
 
+  # /nuts/:number/:anything
   class NutsNX
     def get(number, anything)
       <<~HTML.chomp
