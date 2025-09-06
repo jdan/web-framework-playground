@@ -64,21 +64,40 @@ end
 class CampingExample < CampingRouting
   class Index
     def get
-      <<~HTML
-        <body>
-          <h1>Hello, from index.html</h1>
-          <a href="/jordan">Say hi to Jordan</a>
-        </body>
+      <<~HTML.chomp
+        You got here by: /
       HTML
     end
   end
 
-  class X
-    def get(name)
-      <<~HTML
-        <body>
-          <h1>Hello, #{name}!</h1>
-        </body>
+  class WelcomeToMySite
+    def get
+      <<~HTML.chomp
+        You got here by: /welcome/to/my/site
+      HTML
+    end
+  end
+
+  class NutsN
+    def get(number)
+      <<~HTML.chomp
+        You got here by: /nuts/#{number}
+      HTML
+    end
+  end
+
+  class GorpX
+    def get(anything)
+      <<~HTML.chomp
+        You got here by: /gorp/#{anything}
+      HTML
+    end
+  end
+
+  class NutsNX
+    def get(number, anything)
+      <<~HTML.chomp
+        You got here by: /nuts/#{number}/#{anything}
       HTML
     end
   end

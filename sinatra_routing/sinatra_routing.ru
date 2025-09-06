@@ -50,19 +50,32 @@ end
 
 class SinatraExample < SinatraRouting
   get '/' do
-    <<~HTML
-      <body>
-        <h1>Hello, from index.html</h1>
-        <a href="/jordan">Say hi to Jordan</a>
-      </body>
+    <<~HTML.chomp
+      You got here by: /
     HTML
   end
 
-  get '/:name' do
-    <<~HTML
-      <body>
-        <h1>Hello, #{params[:name]}!</h1>
-      </body>
+  get '/welcome/to/my/site' do
+    <<~HTML.chomp
+      You got here by: /welcome/to/my/site
+    HTML
+  end
+
+  get '/nuts/:number' do
+    <<~HTML.chomp
+      You got here by: /nuts/#{params[:number]}
+    HTML
+  end
+
+  get '/gorp/:anything' do
+    <<~HTML.chomp
+      You got here by: /gorp/#{params[:anything]}
+    HTML
+  end
+
+  get '/nuts/:number/:anything' do
+    <<~HTML.chomp
+      You got here by: /nuts/#{params[:number]}/#{params[:anything]}
     HTML
   end
 end

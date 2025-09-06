@@ -13,26 +13,43 @@ require 'rack/builder'
     let(:app) do
       # Load the actual app
       ru_path = File.join(File.dirname(__FILE__), relative_path)
-      actual_app = Rack::Builder.parse_file(ru_path)
-
-      # Create a wrapper that sets REQUEST_PATH from PATH_INFO
-      lambda do |env|
-        env['REQUEST_PATH'] = env['PATH_INFO']
-        actual_app.call(env)
-      end
+      Rack::Builder.parse_file(ru_path)
     end
 
     it 'responds to GET /' do
       get '/'
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to match(/Hello, from index.html/)
-      expect(last_response.body).to match(%r{<a href="/jordan">Say hi to Jordan</a>})
+      expect(last_response.body).to eq('You got here by: /')
     end
 
-    it 'responds to GET /:name' do
-      get '/jordan'
+    it 'responds to GET /welcome/to/my/site' do
+      get '/welcome/to/my/site'
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to match(/Hello, jordan!/)
+      expect(last_response.body).to eq('You got here by: /welcome/to/my/site')
+    end
+
+    it 'responds to GET /nuts/:number' do
+      get '/nuts/7'
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to eq('You got here by: /nuts/7')
+    end
+
+    it 'responds to GET /gorp/:anything' do
+      get '/gorp/jordan'
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to eq('You got here by: /gorp/jordan')
+    end
+
+    it 'responds to GET /nuts/:number/:anything' do
+      get '/nuts/7/jordan'
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to eq('You got here by: /nuts/7/jordan')
+    end
+
+    it 'returns 404 when passing a string and expecting a number' do
+      get '/nuts/hello/jordan'
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to match(/404 Not Found/)
     end
 
     it 'returns 404 for unknown routes' do

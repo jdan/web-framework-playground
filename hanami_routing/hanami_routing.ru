@@ -50,22 +50,38 @@ end
 
 class HanamiExample < HanamiRouting
   get '/', to: :index
-  get '/:name', to: :name
+  get '/welcome/to/my/site', to: :welcome
+  get '/nuts/:number', to: :nuts_n
+  get '/gorp/:anything', to: :gorp_x
+  get '/nuts/:number/:anything', to: :nuts_n_x
 
   def index
-    <<~HTML
-      <body>
-        <h1>Hello, from index.html</h1>
-        <a href="/jordan">Say hi to Jordan</a>
-      </body>
+    <<~HTML.chomp
+      You got here by: /
     HTML
   end
 
-  def name
-    <<~HTML
-      <body>
-        <h1>Hello, #{params[:name]}!</h1>
-      </body>
+  def welcome
+    <<~HTML.chomp
+      You got here by: /welcome/to/my/site
+    HTML
+  end
+
+  def nuts_n
+    <<~HTML.chomp
+      You got here by: /nuts/#{params[:number]}
+    HTML
+  end
+
+  def gorp_x
+    <<~HTML.chomp
+      You got here by: /gorp/#{params[:anything]}
+    HTML
+  end
+
+  def nuts_n_x
+    <<~HTML.chomp
+      You got here by: /nuts/#{params[:number]}/#{params[:anything]}
     HTML
   end
 end
