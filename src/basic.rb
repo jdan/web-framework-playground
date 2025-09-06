@@ -14,24 +14,14 @@ class BasicExample
 
   def call(env)
     case env['PATH_INFO']
-    when '/'
-      html 'You got here by: /'
-    when '/router'
-      html 'Routing strategy: basic'
-    when '/welcome/to/my/site'
-      html 'You got here by: /welcome/to/my/site'
-    when %r{^/nuts/(?<number>\d+)$}
-      number = Regexp.last_match.named_captures['number']
-      html "You got here by: /nuts/#{number}"
-    when %r{^/gorp/(?<anything>\w+)$}
-      anything = Regexp.last_match.named_captures['anything']
-      html "You got here by: /gorp/#{anything}"
+    when '/' then html 'You got here by: /'
+    when '/router' then html 'Routing strategy: basic'
+    when '/welcome/to/my/site' then html 'You got here by: /welcome/to/my/site'
+    when %r{^/nuts/(?<number>\d+)$} then html "You got here by: /nuts/#{::Regexp.last_match(1)}"
+    when %r{^/gorp/(?<anything>\w+)$} then html "You got here by: /gorp/#{::Regexp.last_match(1)}"
     when %r{^/nuts/(?<number>\d+)/(?<anything>\w+)$}
-      number = Regexp.last_match.named_captures['number']
-      anything = Regexp.last_match.named_captures['anything']
-      html "You got here by: /nuts/#{number}/#{anything}"
-    else
-      not_found
+      html "You got here by: /nuts/#{::Regexp.last_match(1)}/#{::Regexp.last_match(2)}"
+    else not_found
     end
   end
 end
