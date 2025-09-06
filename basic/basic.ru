@@ -5,10 +5,10 @@
 #
 class BasicExample
   def call(env)
-    if env['REQUEST_PATH'] == '/'
+    if env['PATH_INFO'] == '/'
       [200, { 'content-type' => 'text/html' },
        ['<h1>Hello, from index.html</h1><a href="/jordan">Say hi to Jordan</a>']]
-    elsif env['REQUEST_PATH'] =~ %r{^/(?<name>\w+)$}
+    elsif env['PATH_INFO'] =~ %r{^/(?<name>\w+)$}
       [200, { 'content-type' => 'text/html' },
        ["<h1>Hello, #{Regexp.last_match.named_captures['name']}!</h1>"]]
     else

@@ -29,7 +29,7 @@ class HanamiRouting
 
   def call(env)
     route = self.class.routes.find do |route|
-      route[:method] == env['REQUEST_METHOD'] && route[:pattern] =~ env['REQUEST_PATH']
+      route[:method] == env['REQUEST_METHOD'] && route[:pattern] =~ env['PATH_INFO']
     end
 
     if route
