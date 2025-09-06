@@ -27,9 +27,17 @@ class HanamiRouting
     end
   end
 
+  def html(doc)
+    [200, { 'content-type' => 'text/html' }, [doc]]
+  end
+
+  def not_found(doc)
+    [404, { 'content-type' => 'text/html' }, [doc]]
+  end
+
   def call(env)
     route = self.class.routes.find do |route|
-      route[:method] == env['REQUEST_METHOD'] && route[:pattern] =~ env['PATH_INFO']
+      route[:method] == env['REQUEST_METHOD'] and route[:pattern] =~ env['PATH_INFO']
     end
 
     if route
@@ -40,10 +48,9 @@ class HanamiRouting
         params[name.to_sym] = value
       end
       define_singleton_method('params', -> { params })
-
-      [200, { 'content-type' => 'text/html' }, [send(route[:method_name])]]
+      send(route[:method_name])
     else
-      [404, { 'content-type' => 'text/html' }, ['<h1>404 Not Found</h1>']]
+      not_found('404 Not Found')
     end
   end
 end
@@ -56,31 +63,35 @@ class HanamiExample < HanamiRouting
   get '/nuts/:number/:anything', to: :nuts_n_x
 
   def index
-    <<~HTML.chomp
+    html <<~HTML.chomp
       You got here by: /
     HTML
   end
 
   def welcome
-    <<~HTML.chomp
+    html <<~HTML.chomp
       You got here by: /welcome/to/my/site
     HTML
   end
 
   def nuts_n
-    <<~HTML.chomp
+    return not_found '404 Not Found' unless /^\d+$/ =~ params[:number]
+
+    html <<~HTML.chomp
       You got here by: /nuts/#{params[:number]}
     HTML
   end
 
   def gorp_x
-    <<~HTML.chomp
+    html <<~HTML.chomp
       You got here by: /gorp/#{params[:anything]}
     HTML
   end
 
   def nuts_n_x
-    <<~HTML.chomp
+    return not_found '404 Not Found' unless /^\d+$/ =~ params[:number]
+
+    html <<~HTML.chomp
       You got here by: /nuts/#{params[:number]}/#{params[:anything]}
     HTML
   end
