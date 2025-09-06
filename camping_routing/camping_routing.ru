@@ -37,7 +37,15 @@ class CampingRouting
 
                   # hello world => ^/hello/world$
                   # hello x world => ^/hello/(\w+)/world$
-                  re = Regexp.new('^/' + parts.map { |p| p == 'x' ? '(\w+)' : p }.join('/') + '$')
+                  re = Regexp.new('^/' + parts.map { |part|
+                    if part == 'x'
+                      '(\w+)'
+                    elsif part == 'n'
+                      '(\d+)'
+                    else
+                      part
+                    end
+                  }.join('/') + '$')
 
                   { method: 'GET',
                     pattern: re,
