@@ -6,19 +6,19 @@ Various experiments in building web frameworks in Ruby
 
 Run a web server with a given routing strategy:
 
-* BasicExample - <tt>bundle exec rake run:basic</tt>
-* SinatraExample - <tt>bundle exec rake run:sinatra</tt> 
-* HanamiExample - <tt>bundle exec rake run:hanami</tt>
-* CampingExample - <tt>bundle exec rake run:camping</tt>
+* BasicExample - <tt>bin/rake run:basic</tt>
+* SinatraExample - <tt>bin/rake run:sinatra</tt> 
+* HanamiExample - <tt>bin/rake run:hanami</tt>
+* CampingExample - <tt>bin/rake run:camping</tt>
 
 == Testing
 
-  bundle exec rake test
+  bin/rake test
 
 == Linting
 
-  bundle exec rake lint
+  bin/rake lint
 
 == Documentation
 
-  bundle exec rake rdoc
+  bin/rake rdoc
