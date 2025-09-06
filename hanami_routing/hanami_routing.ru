@@ -35,23 +35,26 @@ class HanamiRouting
     [404, { 'content-type' => 'text/html' }, [doc]]
   end
 
+  ##
+  # Declare `params` as a hash from symbol => value
+  # Then expose it as a singleton_method for calling the route's block
+  def set_params!(named_captures)
+    params = {}
+    named_captures.each do |name, value|
+      params[name.to_sym] = value
+    end
+    define_singleton_method('params', -> { params })
+  end
+
   def call(env)
     route = self.class.routes.find do |route|
       route[:method] == env['REQUEST_METHOD'] and route[:pattern] =~ env['PATH_INFO']
     end
 
-    if route
-      # Declare `params` as a hash from symbol => value
-      # Then expose it as a singleton_method for calling the route's block
-      params = {}
-      Regexp.last_match.named_captures.each do |name, value|
-        params[name.to_sym] = value
-      end
-      define_singleton_method('params', -> { params })
-      send(route[:method_name])
-    else
-      not_found('404 Not Found')
-    end
+    return not_found('404 Not Found') unless route
+
+    set_params!(Regexp.last_match.named_captures)
+    send(route[:method_name])
   end
 end
 
