@@ -8,7 +8,7 @@ require 'rack/builder'
     include Rack::Test::Methods
 
     let(:app) do
-      allow(ENV).to receive(:[]).with('ROUTING').and_return(name)
+      allow(ENV).to receive(:fetch).with('ROUTING', nil).and_return(name)
       ru_path = File.join(File.dirname(__FILE__), '../config.ru')
       Rack::Builder.parse_file(ru_path)
     end

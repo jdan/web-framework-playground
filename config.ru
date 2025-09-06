@@ -10,7 +10,7 @@ require_relative 'src/examples/camping_example'
 #
 class Application
   def call(env)
-    case ENV['ROUTING']
+    case ENV.fetch('ROUTING', nil)
     when 'sinatra'
       SinatraExample.new.call(env)
     when 'hanami'

@@ -10,6 +10,10 @@ ROUTING=[basic | sinatra | hanami | camping] bundle exec rackup
 
 bundle exec rake test
 
+== linting
+
+bundle exec rake lint
+
 == docs
 
 bundle exec rake rdoc
