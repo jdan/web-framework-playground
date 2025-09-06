@@ -1,55 +1,19 @@
 # frozen_string_literal: true
 
+require_relative 'util/string_based_routing'
+
 ##
 # A Rack-compatible server which enables Sinatra-style Routing
-class SinatraRouting
-  def initialize
-    @params = {}
-  end
-
+class SinatraRouting < StringBasedRouting
   class << self
-    def routes
-      @routes ||= []
-    end
-
     def get(pattern, &block)
-      # Construct a new regex
-      # Match the entire line
-      # Replace :name with (?<name>\w+)
-      re = Regexp.new("^#{pattern.gsub(/:(\w+)/, '(?<\1>\w+)')}$")
-      routes << { method: 'GET',
-                  pattern: re,
-                  block: block }
+      add_route('GET', pattern, block: block)
     end
   end
 
-  def html(doc)
-    [200, { 'content-type' => 'text/html' }, [doc]]
-  end
+  protected
 
-  def not_found(doc)
-    [404, { 'content-type' => 'text/html' }, [doc]]
-  end
-
-  ##
-  # Declare `params` as a hash from symbol => value
-  # Then expose it as a singleton_method for calling the route's block
-  def set_params!(named_captures)
-    params = {}
-    named_captures.each do |name, value|
-      params[name.to_sym] = value
-    end
-    define_singleton_method('params', -> { params })
-  end
-
-  def call(env)
-    route = self.class.routes.find do |route|
-      route[:method] == env['REQUEST_METHOD'] and route[:pattern] =~ env['PATH_INFO']
-    end
-
-    return not_found('404 Not Found') unless route
-
-    set_params!(Regexp.last_match.named_captures)
+  def execute_route(route)
     instance_eval(&route[:block])
   end
 end

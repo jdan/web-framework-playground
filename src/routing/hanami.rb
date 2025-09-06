@@ -1,55 +1,19 @@
 # frozen_string_literal: true
 
+require_relative 'util/string_based_routing'
+
 ##
 # A rack-compatible server which enables Hanami-style routing
-class HanamiRouting
-  def initialize
-    @params = {}
-  end
-
+class HanamiRouting < StringBasedRouting
   class << self
-    def routes
-      @routes ||= []
-    end
-
     def get(pattern, to:)
-      # Construct a new regex
-      # Match the entire line
-      # Replace :name with (?<name>\w+)
-      re = Regexp.new("^#{pattern.gsub(/:(\w+)/, '(?<\1>\w+)')}$")
-      routes << { method: 'GET',
-                  pattern: re,
-                  method_name: to }
+      add_route('GET', pattern, method_name: to)
     end
   end
 
-  def html(doc)
-    [200, { 'content-type' => 'text/html' }, [doc]]
-  end
+  protected
 
-  def not_found(doc)
-    [404, { 'content-type' => 'text/html' }, [doc]]
-  end
-
-  ##
-  # Declare `params` as a hash from symbol => value
-  # Then expose it as a singleton_method for calling the route's block
-  def set_params!(named_captures)
-    params = {}
-    named_captures.each do |name, value|
-      params[name.to_sym] = value
-    end
-    define_singleton_method('params', -> { params })
-  end
-
-  def call(env)
-    route = self.class.routes.find do |route|
-      route[:method] == env['REQUEST_METHOD'] and route[:pattern] =~ env['PATH_INFO']
-    end
-
-    return not_found('404 Not Found') unless route
-
-    set_params!(Regexp.last_match.named_captures)
+  def execute_route(route)
     send(route[:method_name])
   end
 end
