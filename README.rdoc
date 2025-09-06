@@ -4,16 +4,21 @@ Various experiments in building web frameworks in Ruby
 
 == usage
 
-ROUTING=[basic | sinatra | hanami | camping] bundle exec rackup
+Run a web server with a given routing strategy:
 
-== testing
+* BasicExample - <tt>bundle exec rake run:basic</tt>
+* SinatraExample - <tt>bundle exec rake run:sinatra</tt> 
+* HanamiExample - <tt>bundle exec rake run:hanami</tt>
+* CampingExample - <tt>bundle exec rake run:camping</tt>
 
-bundle exec rake test
+== Testing
 
-== linting
+  bundle exec rake test
 
-bundle exec rake lint
+== Linting
 
-== docs
+  bundle exec rake lint
 
-bundle exec rake rdoc
+== Documentation
+
+  bundle exec rake rdoc
