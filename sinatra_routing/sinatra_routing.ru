@@ -27,6 +27,14 @@ class SinatraRouting
     end
   end
 
+  def html(doc)
+    [200, { 'content-type' => 'text/html' }, [doc]]
+  end
+
+  def not_found(doc)
+    [404, { 'content-type' => 'text/html' }, [doc]]
+  end
+
   def call(env)
     route = self.class.routes.find do |route|
       route[:method] == env['REQUEST_METHOD'] and route[:pattern] =~ env['PATH_INFO']
@@ -40,41 +48,44 @@ class SinatraRouting
         params[name.to_sym] = value
       end
       define_singleton_method('params', -> { params })
-
-      [200, { 'content-type' => 'text/html' }, [instance_eval(&route[:block])]]
+      instance_eval(&route[:block])
     else
-      [404, { 'content-type' => 'text/html' }, ['<h1>404 Not Found</h1>']]
+      not_found('404 Not Found')
     end
   end
 end
 
 class SinatraExample < SinatraRouting
   get '/' do
-    <<~HTML.chomp
+    html <<~HTML.chomp
       You got here by: /
     HTML
   end
 
   get '/welcome/to/my/site' do
-    <<~HTML.chomp
+    html <<~HTML.chomp
       You got here by: /welcome/to/my/site
     HTML
   end
 
   get '/nuts/:number' do
-    <<~HTML.chomp
+    next not_found '404 Not Found' unless /^\d+$/ =~ params[:number]
+
+    html <<~HTML.chomp
       You got here by: /nuts/#{params[:number]}
     HTML
   end
 
   get '/gorp/:anything' do
-    <<~HTML.chomp
+    html <<~HTML.chomp
       You got here by: /gorp/#{params[:anything]}
     HTML
   end
 
   get '/nuts/:number/:anything' do
-    <<~HTML.chomp
+    next not_found '404 Not Found' unless /^\d+$/ =~ params[:number]
+
+    html <<~HTML.chomp
       You got here by: /nuts/#{params[:number]}/#{params[:anything]}
     HTML
   end
