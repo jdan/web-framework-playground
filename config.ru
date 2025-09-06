@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'src/routing/basic'
-require_relative 'src/routing/sinatra'
-require_relative 'src/routing/hanami'
-require_relative 'src/routing/camping'
+require_relative 'src/examples/basic_example'
+require_relative 'src/examples/sinatra_example'
+require_relative 'src/examples/hanami_example'
+require_relative 'src/examples/camping_example'
 
 ##
 # A basic Rack server
