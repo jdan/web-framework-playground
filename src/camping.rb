@@ -27,30 +27,39 @@ class CampingRouting
       instance = klass.new
 
       # TODO: Handle post/patch/delete/etc
-      routes << if const_name == :Index
-                  { method: 'GET',
-                    pattern: %r{^/$},
-                    instance: instance }
-                else
-                  # HelloWorld => hello world
-                  parts = const_name.to_s.gsub(/([A-Z])/) { |s| " #{s.downcase}" }.split(' ')
+      routes << { method: 'GET',
+                  pattern: regexp_of_name(const_name),
+                  instance: instance }
+    end
 
-                  # hello world => ^/hello/world$
-                  # hello x world => ^/hello/(\w+)/world$
-                  re = Regexp.new("^/#{parts.map do |part|
-                    if part == 'x'
-                      '(\w+)'
-                    elsif part == 'n'
-                      '(\d+)'
-                    else
-                      part
-                    end
-                  end.join('/')}$")
+    ##
+    # HelloWorld -> hello_world
+    def snake_of_pascal(str)
+      str.gsub(/([A-Z])/) { |s| "_#{s.downcase}" }[1..]
+    end
 
-                  { method: 'GET',
-                    pattern: re,
-                    instance: instance }
-                end
+    def regex_of_part(part)
+      case part
+      when 'x'
+        '(\w+)'
+      when 'n'
+        '(\d+)'
+      else
+        part
+      end
+    end
+
+    ##
+    # :HelloWorld => ^/hello/world$
+    # :HelloXWorld => ^/hello/(\w+)/world$
+    def regexp_of_name(const_name)
+      return %r{^/$} if const_name == :Index
+
+      regexp_str = snake_of_pascal(const_name.to_s)
+                   .split('_')
+                   .map { |part| regex_of_part(part) }
+                   .join('/')
+      Regexp.new("^/#{regexp_str}$")
     end
   end
 
