@@ -12,4 +12,4 @@ bundle exec rake test
 
 == docs
 
-bundle exec rdoc
+bundle exec rake rdoc
