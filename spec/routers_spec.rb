@@ -19,6 +19,12 @@ require 'rack/builder'
       expect(last_response.body).to eq 'You got here by: /'
     end
 
+    it 'can identify itself with /router' do
+      get '/router'
+      expect(last_response.status).to eq 200
+      expect(last_response.body).to eq "Routing strategy: #{name}"
+    end
+
     it 'responds to GET /welcome/to/my/site' do
       get '/welcome/to/my/site'
       expect(last_response.status).to eq 200

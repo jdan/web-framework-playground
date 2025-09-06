@@ -79,6 +79,15 @@ class CampingExample < CampingRouting
     end
   end
 
+  # /router
+  class Router
+    def get
+      <<~HTML.chomp
+        Routing strategy: camping
+      HTML
+    end
+  end
+
   # /welcome/to/my/site
   class WelcomeToMySite
     def get

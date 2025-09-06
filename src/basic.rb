@@ -16,6 +16,8 @@ class BasicExample
     case env['PATH_INFO']
     when '/'
       html 'You got here by: /'
+    when '/router'
+      html 'Routing strategy: basic'
     when '/welcome/to/my/site'
       html 'You got here by: /welcome/to/my/site'
     when %r{^/nuts/(?<number>\d+)$}

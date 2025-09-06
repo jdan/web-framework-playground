@@ -61,6 +61,7 @@ end
 #
 class HanamiExample < HanamiRouting
   get '/', to: :index
+  get '/router', to: :router
   get '/welcome/to/my/site', to: :welcome
   get '/nuts/:number', to: :nuts_n
   get '/gorp/:anything', to: :gorp_x
@@ -69,6 +70,12 @@ class HanamiExample < HanamiRouting
   def index
     html <<~HTML.chomp
       You got here by: /
+    HTML
+  end
+
+  def router
+    html <<~HTML.chomp
+      Routing strategy: hanami
     HTML
   end
 

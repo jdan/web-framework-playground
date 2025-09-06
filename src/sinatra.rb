@@ -66,6 +66,12 @@ class SinatraExample < SinatraRouting
     HTML
   end
 
+  get '/router' do
+    html <<~HTML.chomp
+      Routing strategy: sinatra
+    HTML
+  end
+
   get '/welcome/to/my/site' do
     html <<~HTML.chomp
       You got here by: /welcome/to/my/site
