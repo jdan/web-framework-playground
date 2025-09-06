@@ -100,5 +100,3 @@ class HanamiExample < HanamiRouting
     HTML
   end
 end
-
-run HanamiExample.new

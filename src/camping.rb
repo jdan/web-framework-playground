@@ -115,5 +115,3 @@ class CampingExample < CampingRouting
     end
   end
 end
-
-run CampingExample.new

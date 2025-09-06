@@ -3,18 +3,13 @@
 require 'rack/test'
 require 'rack/builder'
 
-{
-  'BasicExample' => '../basic/basic.ru',
-  'SinatraExample' => '../sinatra_routing/sinatra_routing.ru',
-  'HanamiExample' => '../hanami_routing/hanami_routing.ru',
-  'CampingExample' => '../camping_routing/camping_routing.ru'
-}.each do |name, relative_path|
+%w[basic sinatra hanami camping].each do |name|
   describe name do
     include Rack::Test::Methods
 
     let(:app) do
-      # Load the actual app
-      ru_path = File.join(File.dirname(__FILE__), relative_path)
+      allow(ENV).to receive(:[]).with('ROUTING').and_return(name)
+      ru_path = File.join(File.dirname(__FILE__), '../config.ru')
       Rack::Builder.parse_file(ru_path)
     end
 

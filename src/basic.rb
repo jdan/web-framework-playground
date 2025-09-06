@@ -33,5 +33,3 @@ class BasicExample
     end
   end
 end
-
-run BasicExample.new

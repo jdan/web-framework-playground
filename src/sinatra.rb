@@ -94,5 +94,3 @@ class SinatraExample < SinatraRouting
     HTML
   end
 end
-
-run SinatraExample.new

@@ -4,7 +4,7 @@ Various experiments in building web frameworks in Ruby
 
 == usage
 
-bundle exec rackup basic/basic.ru # replace with any available ru file
+ROUTING=[basic | sinatra | hanami | camping] bundle exec rackup
 
 == testing
 
