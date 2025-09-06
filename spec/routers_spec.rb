@@ -49,13 +49,13 @@ require 'rack/builder'
     it 'returns 404 when passing a string and expecting a number' do
       get '/nuts/hello/jordan'
       expect(last_response.status).to eq(404)
-      expect(last_response.body).to match(/404 Not Found/)
+      expect(last_response.body).to eq('404 Not Found')
     end
 
     it 'returns 404 for unknown routes' do
       get '/path/with/multiple/segments'
       expect(last_response.status).to eq(404)
-      expect(last_response.body).to match(/404 Not Found/)
+      expect(last_response.body).to eq('404 Not Found')
     end
   end
 end

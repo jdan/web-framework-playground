@@ -64,7 +64,7 @@ class CampingRouting
       result = route[:instance].send(:get, *Regexp.last_match.captures)
       [200, { 'content-type' => 'text/html' }, [result]]
     else
-      [404, { 'content-type' => 'text/html' }, ['<h1>404 Not Found</h1>']]
+      [404, { 'content-type' => 'text/html' }, ['404 Not Found']]
     end
   end
 end
