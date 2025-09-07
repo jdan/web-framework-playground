@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../routing/hanami'
+require_relative '../lib/routing/hanami'
 
 ##
 # A web server with Hanami-style routing

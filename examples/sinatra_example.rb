@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../routing/sinatra'
+require_relative '../lib/routing/sinatra'
 
 ##
 # A web server with Sinatra-style routing

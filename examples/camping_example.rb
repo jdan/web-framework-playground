@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../routing/camping'
+require_relative '../lib/routing/camping'
 
 ##
 # A web server with camping-style routing
