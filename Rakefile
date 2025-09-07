@@ -2,17 +2,15 @@
 
 require 'rake'
 require 'rspec/core/rake_task'
-require 'rdoc/task'
+require 'yard'
 require 'rubocop/rake_task'
 
 # rake test
 RSpec::Core::RakeTask.new(:test)
 
-# rake rdoc
-RDoc::Task.new :rdoc do |rdoc|
-  rdoc.main = 'README.rdoc'
-  rdoc.rdoc_dir = 'doc'
-  rdoc.rdoc_files.include('README.rdoc', 'src/**/*.rb')
+YARD::Rake::YardocTask.new do |t|
+  t.files = ['src/**/*.rb'] # optional
+  t.stats_options = ['--list-undoc'] # optional
 end
 
 # rake lint

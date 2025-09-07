@@ -21,4 +21,4 @@ Run a web server with a given routing strategy:
 
 == Documentation
 
-  bin/rake rdoc
+  bin/rake yard
