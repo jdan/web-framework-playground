@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'src/examples/basic_example'
-require_relative 'src/examples/sinatra_example'
-require_relative 'src/examples/hanami_example'
-require_relative 'src/examples/camping_example'
+require_relative 'lib/examples/basic_example'
+require_relative 'lib/examples/sinatra_example'
+require_relative 'lib/examples/hanami_example'
+require_relative 'lib/examples/camping_example'
 
 ##
 # A basic Rack server

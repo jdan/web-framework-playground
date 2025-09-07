@@ -9,7 +9,6 @@ require 'rubocop/rake_task'
 RSpec::Core::RakeTask.new(:test)
 
 YARD::Rake::YardocTask.new do |t|
-  t.files = ['src/**/*.rb'] # optional
   t.stats_options = ['--list-undoc'] # optional
 end
 
