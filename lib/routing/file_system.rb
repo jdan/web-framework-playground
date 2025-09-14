@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'zeitwerk'
+require_relative 'utils/string_utils'
 
 ##
 # A file-system based router, like Next.js
@@ -22,15 +23,10 @@ class FileSystemRouting
   end
 
   class << self
+    include StringUtils
+
     def routes
       @routes ||= []
-    end
-
-    ##
-    # HelloWorld -> hello_world
-    # TODO: Refactor to utils/
-    def snake_of_pascal(str)
-      str.gsub(/([A-Z])/) { |s| "_#{s.downcase}" }[1..]
     end
 
     ##

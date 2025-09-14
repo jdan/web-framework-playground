@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'utils/string_utils'
+
 ##
 # A web server with Camping-style routing
 #
@@ -18,6 +20,8 @@
 # end
 class CampingRouting
   class << self
+    include StringUtils
+
     def routes
       @routes ||= []
     end
@@ -30,12 +34,6 @@ class CampingRouting
       routes << { method: 'GET',
                   pattern: regexp_of_name(const_name),
                   instance: instance }
-    end
-
-    ##
-    # HelloWorld -> hello_world
-    def snake_of_pascal(str)
-      str.gsub(/([A-Z])/) { |s| "_#{s.downcase}" }[1..]
     end
 
     def regex_of_part(part)

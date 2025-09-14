@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'util/string_based_routing'
+require_relative 'utils/string_based_routing'
 
 ##
 # A rack-compatible server which enables Hanami-style routing
