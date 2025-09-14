@@ -14,7 +14,6 @@ class FileSystemRouting
     end
 
     if route
-      # Call klass.get with the list of captures
       result = route[:instance].send(:call, env, *Regexp.last_match.captures)
       [200, { 'content-type' => 'text/html' }, [result]]
     else
