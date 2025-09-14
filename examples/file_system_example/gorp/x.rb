@@ -3,7 +3,7 @@
 module Gorp
   ##
   # GET /gorp/:anything
-  class X
+  module X
     def call(_env, anything)
       "You got here by: /gorp/#{anything}"
     end

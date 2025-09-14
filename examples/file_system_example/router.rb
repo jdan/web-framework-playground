@@ -2,7 +2,7 @@
 
 ##
 # GET /router
-class Router
+module Router
   def call(_env)
     'Routing strategy: file_system'
   end

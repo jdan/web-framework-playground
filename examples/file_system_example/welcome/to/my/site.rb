@@ -5,7 +5,7 @@ module Welcome
     module My
       ##
       # GET /welcome/to/my/site
-      class Site
+      module Site
         def call(_env)
           'You got here by: /welcome/to/my/site'
         end

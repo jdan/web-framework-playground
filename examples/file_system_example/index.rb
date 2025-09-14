@@ -2,7 +2,7 @@
 
 ##
 # GET /
-class Index
+module Index
   def call(_env)
     'You got here by: /'
   end

@@ -7,14 +7,15 @@ require_relative 'utils/string_utils'
 # A file-system based router, like Next.js
 #
 class FileSystemRouting
-  # TODO: Similar to Camping, can likely be refactored
   def call(env)
     route = self.class.routes.find do |route|
       route[:method] == env['REQUEST_METHOD'] and route[:pattern] =~ env['PATH_INFO']
     end
 
     if route
-      result = route[:instance].send(:call, env, *Regexp.last_match.captures)
+      # Call the module's `call` method
+      obj = Object.new.extend route[:module]
+      result = obj.call env, *Regexp.last_match.captures
       [200, { 'content-type' => 'text/html' }, [result]]
     else
       [404, { 'content-type' => 'text/html' }, ['404 Not Found']]
@@ -47,10 +48,9 @@ class FileSystemRouting
     def register_route!(cpath, value)
       return unless value.method_defined? :call
 
-      instance = value.new
       routes << { method: 'GET',
                   pattern: regexp_of_name(cpath),
-                  instance: instance }
+                  module: value }
     end
 
     def root(dir)

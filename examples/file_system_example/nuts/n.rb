@@ -3,7 +3,7 @@
 module Nuts
   ##
   # GET /nuts/:number
-  class N
+  module N
     def call(_env, number)
       "You got here by: /nuts/#{number}"
     end
