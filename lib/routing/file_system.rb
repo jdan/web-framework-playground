@@ -49,17 +49,21 @@ class FileSystemRouting
       Regexp.new("^/#{inner}$")
     end
 
+    def register_route!(cpath, value)
+      return unless value.method_defined? :call
+
+      instance = value.new
+      routes << { method: 'GET',
+                  pattern: regexp_of_name(cpath),
+                  instance: instance }
+    end
+
     def root(dir)
       from_dir = File.dirname(caller.first.split(':').first)
       @root = File.join(from_dir, dir)
       loader = Zeitwerk::Loader.new
       loader.on_load do |cpath, value, _abspath|
-        next unless value.method_defined? :call
-
-        instance = value.new
-        routes << { method: 'GET',
-                    pattern: regexp_of_name(cpath),
-                    instance: instance }
+        register_route! cpath, value
       end
       loader.push_dir(@root)
       loader.setup
