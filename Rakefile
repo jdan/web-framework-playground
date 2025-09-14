@@ -35,4 +35,9 @@ namespace :run do
   task :camping do
     sh 'ROUTING=camping rackup'
   end
+
+  desc 'Run an example web server with file-system based routing'
+  task :file_system do
+    sh 'ROUTING=file_system rackup'
+  end
 end

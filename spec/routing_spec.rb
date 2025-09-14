@@ -3,7 +3,7 @@
 require 'rack/test'
 require 'rack/builder'
 
-%w[basic sinatra hanami camping].each do |name|
+%w[basic sinatra hanami camping file_system].each do |name|
   describe name do
     include Rack::Test::Methods
 

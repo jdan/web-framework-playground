@@ -10,6 +10,7 @@ Run a web server with a given routing strategy:
 * SinatraExample - <tt>bin/rake run:sinatra</tt> 
 * HanamiExample - <tt>bin/rake run:hanami</tt>
 * CampingExample - <tt>bin/rake run:camping</tt>
+* FileSystemExample - <tt>bin/rake run:file_system</tt>
 
 == Testing
 
